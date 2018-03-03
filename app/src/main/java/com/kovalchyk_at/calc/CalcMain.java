@@ -39,6 +39,7 @@ public class CalcMain extends AppCompatActivity {
 
     private String resultStr;
     private String operation;
+
     Button.OnClickListener digitOnClick = new Button.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -52,7 +53,6 @@ public class CalcMain extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             TextView current = (TextView) view;
-
             switch (current.getId()) {
                 case R.id.tvClearLog:
                     tvLog.setText("");
@@ -68,14 +68,19 @@ public class CalcMain extends AppCompatActivity {
             if (resultStr.isEmpty()) {
                 resultStr = "0.0";
             }
+
             resultDouble = Double.parseDouble(resultStr);
 
             switch (current.getId()) {
                 case R.id.btnNeg:
-                    if (resultDouble < 0) {
-                        resultStr = resultStr.substring(1);
+                    if (resultDouble == 0) {
+                        resultStr = "0";
                     } else {
-                        resultStr = "-" + resultStr;
+                        if (resultDouble < 0) {
+                            resultStr = resultStr.substring(1);
+                        } else {
+                            resultStr = "-" + resultStr;
+                        }
                     }
                     tvResult.setText(resultStr);
                     resultDouble = Double.parseDouble(resultStr);
@@ -89,8 +94,13 @@ public class CalcMain extends AppCompatActivity {
                     break;
                 case R.id.btnDel:
                     String str = (String) tvResult.getText();
-                    tvResult.setText(str.substring(0, str.length() - 1));
-                    resultDouble = Double.parseDouble(resultStr);
+                    if (str.length() > 0) {
+                        tvResult.setText(str.substring(0, str.length() - 1));
+                        resultDouble = Double.parseDouble(resultStr);
+                    } else {
+                        resultStr = "";
+                        resultDouble = 0.0;
+                    }
                     break;
                 case R.id.btnDiv:
                     setOperatoin("/");
@@ -128,6 +138,9 @@ public class CalcMain extends AppCompatActivity {
                     }
                     break;
                 case R.id.btnDot:
+                    if (!((String) tvResult.getText()).contains(current.getText())){
+                    resultStr = (String) tvResult.getText() + (String) current.getText();
+                    tvResult.setText(resultStr);}
                     break;
                 case R.id.btnIncr:
                     setOperatoin("+");
@@ -169,7 +182,7 @@ public class CalcMain extends AppCompatActivity {
         btn7.setOnClickListener(digitOnClick);
         btn8.setOnClickListener(digitOnClick);
         btn9.setOnClickListener(digitOnClick);
-        btnDot.setOnClickListener(digitOnClick);
+        btnDot.setOnClickListener(operationOnClick);
         btnClear.setOnClickListener(operationOnClick);
         btnDecr.setOnClickListener(operationOnClick);
         btnDel.setOnClickListener(operationOnClick);
