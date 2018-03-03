@@ -31,26 +31,40 @@ public class CalcMain extends AppCompatActivity {
     private Button btnNeg;
 
     private TextView tvLog;
-    private TextView tvResalt;
+    private TextView tvResult;
+    private TextView tvClearLog;
 
     private Double resultDouble;
     private Double firstDouble;
 
     private String resultStr;
+    private String operation;
     Button.OnClickListener digitOnClick = new Button.OnClickListener() {
         @Override
         public void onClick(View view) {
             Button current = (Button) view;
-            resultStr = (String) tvResalt.getText() + (String) current.getText();
-            tvResalt.setText(resultStr);
+            resultStr = (String) tvResult.getText() + (String) current.getText();
+            tvResult.setText(resultStr);
         }
     };
-    private String operation;
+
+    TextView.OnClickListener tvOnClick = new TextView.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            TextView current = (TextView) view;
+
+            switch (current.getId()) {
+                case R.id.tvClearLog:
+                    tvLog.setText("");
+            }
+        }
+    };
+
     Button.OnClickListener operationOnClick = new Button.OnClickListener() {
         @Override
         public void onClick(View view) {
             Button current = (Button) view;
-            resultStr = (String) tvResalt.getText();
+            resultStr = (String) tvResult.getText();
             if (resultStr.isEmpty()) {
                 resultStr = "0.0";
             }
@@ -63,19 +77,19 @@ public class CalcMain extends AppCompatActivity {
                     } else {
                         resultStr = "-" + resultStr;
                     }
-                    tvResalt.setText(resultStr);
+                    tvResult.setText(resultStr);
                     resultDouble = Double.parseDouble(resultStr);
                     break;
                 case R.id.btnClear:
                     resultDouble = 0.0;
-                    tvResalt.setText("");
+                    tvResult.setText("");
                     break;
                 case R.id.btnDecr:
                     setOperatoin("-");
                     break;
                 case R.id.btnDel:
-                    String str = (String) tvResalt.getText();
-                    tvResalt.setText(str.substring(0, str.length() - 1));
+                    String str = (String) tvResult.getText();
+                    tvResult.setText(str.substring(0, str.length() - 1));
                     resultDouble = Double.parseDouble(resultStr);
                     break;
                 case R.id.btnDiv:
@@ -85,29 +99,33 @@ public class CalcMain extends AppCompatActivity {
                     setOperatoin("div");
                     break;
                 case R.id.btnEnter:
-                    switch (operation) {
-                        case "+":
-                            resultDouble = firstDouble + Double.parseDouble(resultStr);
-                            break;
-                        case "-":
-                            resultDouble = firstDouble - Double.parseDouble(resultStr);
-                            break;
-                        case "*":
-                            resultDouble = firstDouble * Double.parseDouble(resultStr);
-                            break;
-                        case "/":
-                            resultDouble = firstDouble / Double.parseDouble(resultStr);
-                            break;
-                        case "mod":
-                            resultDouble = firstDouble % Double.parseDouble(resultStr);
-                            break;
-                        case "div":
-                            resultDouble = firstDouble + Double.parseDouble(resultStr);
-                            break;
+                    if (operation != null) {
+                        switch (operation) {
+                            case "+":
+                                resultDouble = firstDouble + Double.parseDouble(resultStr);
+                                break;
+                            case "-":
+                                resultDouble = firstDouble - Double.parseDouble(resultStr);
+                                break;
+                            case "*":
+                                resultDouble = firstDouble * Double.parseDouble(resultStr);
+                                break;
+                            case "/":
+                                resultDouble = firstDouble / Double.parseDouble(resultStr);
+                                break;
+                            case "mod":
+                                resultDouble = firstDouble % Double.parseDouble(resultStr);
+                                break;
+                            case "div":
+                                resultDouble = firstDouble + Double.parseDouble(resultStr);
+                                break;
+                            default:
+                                break;
+                        }
+                        tvLog.setText(tvLog.getText() + firstDouble.toString() + operation + resultStr + "=" + resultDouble.toString() + "\n");
+                        firstDouble = resultDouble;
+                        tvResult.setText(resultDouble.toString());
                     }
-                    tvLog.setText(tvLog.getText() + firstDouble.toString() + operation + resultStr + "=" + resultDouble.toString() + "\n");
-                    firstDouble = resultDouble;
-                    tvResalt.setText(resultDouble.toString());
                     break;
                 case R.id.btnDot:
                     break;
@@ -128,7 +146,7 @@ public class CalcMain extends AppCompatActivity {
         this.operation = operation;
         firstDouble = resultDouble;
         resultDouble = 0.0;
-        tvResalt.setText("");
+        tvResult.setText("");
     }
 
     @Override
@@ -138,7 +156,6 @@ public class CalcMain extends AppCompatActivity {
 
         initBtn();
         setListeners();
-
     }
 
     private void setListeners() {
@@ -163,11 +180,13 @@ public class CalcMain extends AppCompatActivity {
         btnMod.setOnClickListener(operationOnClick);
         btnMult.setOnClickListener(operationOnClick);
         btnNeg.setOnClickListener(operationOnClick);
+        tvClearLog.setOnClickListener(tvOnClick);
     }
 
     private void initBtn() {
-        tvResalt = findViewById(R.id.resaltTV);
-        tvLog = findViewById(R.id.Log);
+        tvResult = findViewById(R.id.tvResalt);
+        tvLog = findViewById(R.id.tvLog);
+        tvClearLog = findViewById(R.id.tvClearLog);
 
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);

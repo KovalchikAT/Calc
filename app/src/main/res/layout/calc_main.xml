@@ -9,12 +9,13 @@
     tools:context="com.kovalchyk_at.calc.CalcMain">
 
     <TextView
-        android:id="@+id/resaltTV"
+        android:id="@+id/tvResalt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@android:color/white"
-        android:gravity="right"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="end"
         android:textSize="24sp"/>
 
     <LinearLayout
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/_7"/>
+            android:text="@string/_7" />
 
         <Button
             android:id="@+id/btn8"
@@ -200,19 +201,53 @@
             android:text="@string/enter"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="8dp"
-        android:textSize="20sp"
-        android:text="@string/history"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/Log"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/history"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvClearLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/clear_log"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        />
+        android:fillViewport="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="16dp"
+        android:verticalScrollbarPosition="right">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.v7.widget.FitWindowsLinearLayout>
